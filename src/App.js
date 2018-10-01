@@ -21,11 +21,19 @@ class App extends Component {
       query: "",
     };
   }
+
+  setStateToTrue(){
+    if(!this.state.loading){
+      this.setState({loading:true});
+    }
+  }
+
   //this function makes the request to flickr
   //it sets the state to hold photos it fetches and also turns off the loading indicator when it's done
   getPhotos (query) { 
     const myKey = apiKey;
-
+    this.setStateToTrue();
+    
     axios.get(`https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
       .then(response => {
         this.setState({
@@ -44,7 +52,7 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <div className="container">
-            <Search history={this.props.history} onSearch={this.getPhotos} />
+            <Search history={this.props.history} onSearch={this.getPhotos.bind(this)} />
             <nav className="main-nav"> 
               {/* Nav links*/} 
               <ul>
